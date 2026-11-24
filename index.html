@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flowdeck — Work, beautifully organised</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --bg:#fbfbff; --ink:#191933; --dim:#5d5d7a; --brand:#6c4cf1; --brand2:#a78bfa; --mint:#c8f169; }
+  body { background:var(--bg); color:var(--ink); font-family:'Segoe UI', system-ui, sans-serif; }
+  nav { display:flex; justify-content:space-between; align-items:center; padding:22px 6vw; position:sticky; top:0; background:rgba(251,251,255,.85); backdrop-filter:blur(12px); z-index:20; }
+  .logo { font-size:22px; font-weight:800; }
+  .logo span { color:var(--brand); }
+  nav ul { display:flex; gap:30px; list-style:none; align-items:center; }
+  nav a { color:var(--dim); text-decoration:none; font-size:14px; font-weight:500; }
+  nav a:hover { color:var(--ink); }
+  .btn { padding:12px 26px; border-radius:12px; font-size:14px; font-weight:600; text-decoration:none; transition:.25s; display:inline-block; }
+  .btn-dark { background:var(--ink); color:#fff !important; }
+  .btn-dark:hover { background:var(--brand); transform:translateY(-2px); }
+  .btn-brand { background:var(--brand); color:#fff; }
+  .btn-brand:hover { box-shadow:0 12px 30px rgba(108,76,241,.4); transform:translateY(-2px); }
+  header { text-align:center; padding:90px 6vw 60px; position:relative; }
+  .pill { display:inline-block; background:#efecfe; color:var(--brand); font-size:13px; font-weight:600; padding:8px 18px; border-radius:40px; margin-bottom:26px; }
+  h1 { font-size:clamp(40px, 6.5vw, 84px); font-weight:800; letter-spacing:-2.5px; line-height:1.05; }
+  h1 em { font-style:normal; color:var(--brand); position:relative; }
+  h1 em::after { content:''; position:absolute; left:0; right:0; bottom:8px; height:14px; background:var(--mint); z-index:-1; border-radius:4px; }
+  .sub { color:var(--dim); font-size:19px; max-width:560px; margin:26px auto 40px; line-height:1.7; }
+  .hero-img { margin:70px auto 0; max-width:1000px; background:linear-gradient(145deg,#191933,#3b2d8f); border-radius:22px; padding:26px; box-shadow:0 40px 90px rgba(25,25,51,.25); }
+  .hero-img .bar { display:flex; gap:8px; margin-bottom:18px; }
+  .hero-img .bar i { width:12px; height:12px; border-radius:50%; background:#4b4b6d; }
+  .mock { background:#fff; border-radius:14px; padding:26px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; text-align:left; }
+  .col { background:#f4f4fb; border-radius:10px; padding:16px; }
+  .col h4 { font-size:12px; text-transform:uppercase; letter-spacing:1px; color:var(--dim); margin-bottom:12px; }
+  .task { background:#fff; border-radius:8px; padding:12px; font-size:13px; margin-bottom:10px; box-shadow:0 2px 8px rgba(25,25,51,.06); border-left:3px solid var(--brand2); }
+  .task:nth-child(3) { border-color:var(--mint); } .task:nth-child(4) { border-color:#ffb86b; }
+  section { padding:100px 6vw; max-width:1200px; margin:0 auto; }
+  .sec-tag { color:var(--brand); font-weight:700; font-size:13px; letter-spacing:2px; text-transform:uppercase; text-align:center; }
+  h2 { font-size:clamp(30px,4vw,50px); font-weight:800; letter-spacing:-1.5px; text-align:center; margin:14px 0 60px; }
+  .features { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+  .feat { background:#fff; border:1px solid #eceaf8; border-radius:18px; padding:36px 30px; transition:.3s; }
+  .feat:hover { transform:translateY(-6px); box-shadow:0 24px 50px rgba(108,76,241,.12); border-color:var(--brand2); }
+  .feat .ico { width:52px; height:52px; border-radius:14px; background:#efecfe; display:grid; place-items:center; font-size:24px; margin-bottom:20px; }
+  .feat h3 { font-size:20px; margin-bottom:10px; }
+  .feat p { color:var(--dim); font-size:15px; line-height:1.7; }
+  .pricing { background:linear-gradient(180deg, #191933, #241f4d); border-radius:28px; padding:70px 5vw; color:#fff; }
+  .pricing h2 { color:#fff; }
+  .toggle { display:flex; justify-content:center; align-items:center; gap:14px; margin-bottom:50px; font-size:14px; }
+  .switch { width:56px; height:30px; background:#4b4b6d; border-radius:20px; position:relative; cursor:pointer; transition:.3s; }
+  .switch::after { content:''; position:absolute; top:3px; left:3px; width:24px; height:24px; background:#fff; border-radius:50%; transition:.3s; }
+  .switch.yearly::after { left:29px; }
+  .save { background:var(--mint); color:var(--ink); font-size:11px; font-weight:700; padding:4px 10px; border-radius:20px; }
+  .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:18px; }
+  .plan { background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.12); border-radius:18px; padding:36px 28px; }
+  .plan.hot { background:#fff; color:var(--ink); transform:scale(1.04); }
+  .plan h3 { font-size:18px; }
+  .plan .price { font-size:44px; font-weight:800; margin:16px 0 4px; }
+  .plan .per { color:var(--dim); font-size:13px; margin-bottom:22px; }
+  .plan ul { list-style:none; margin-bottom:26px; }
+  .plan li { padding:8px 0; font-size:14px; }
+  .plan li::before { content:'✓'; color:var(--brand); font-weight:800; margin-right:10px; }
+  .plan .btn { width:100%; text-align:center; }
+  .faq details { background:#fff; border:1px solid #eceaf8; border-radius:14px; margin-bottom:12px; padding:20px 24px; }
+  .faq summary { font-weight:600; cursor:pointer; font-size:16px; list-style:none; }
+  .faq summary::after { content:'+'; float:right; color:var(--brand); font-size:20px; }
+  .faq details[open] summary::after { content:'−'; }
+  .faq details p { color:var(--dim); margin-top:12px; line-height:1.7; font-size:15px; }
+  .cta { text-align:center; background:linear-gradient(120deg, var(--brand), #9333ea); border-radius:28px; padding:80px 6vw; color:#fff; }
+  .cta h2 { color:#fff; margin-bottom:20px; }
+  .cta p { opacity:.85; margin-bottom:34px; font-size:17px; }
+  footer { padding:50px 6vw; display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; color:var(--dim); font-size:13px; }
+  @media (max-width:760px){ nav ul li:not(:last-child){display:none;} .mock{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Flowdeck<span>.</span></div>
+  <ul>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#cta" class="btn btn-dark">Get started</a></li>
+  </ul>
+</nav>
+<header>
+  <div class="pill">✨ New: AI summaries for every board</div>
+  <h1>Work, <em>beautifully</em> organised.</h1>
+  <p class="sub">Flowdeck turns chaotic projects into calm, visual boards your whole team actually enjoys using.</p>
+  <a href="#pricing" class="btn btn-brand">Start free — no card needed</a>
+  <div class="hero-img">
+    <div class="bar"><i></i><i></i><i></i></div>
+    <div class="mock">
+      <div class="col"><h4>To do</h4><div class="task">Design onboarding flow</div><div class="task">Draft Q3 roadmap</div></div>
+      <div class="col"><h4>In progress</h4><div class="task">Mobile nav redesign</div><div class="task">API rate limits</div></div>
+      <div class="col"><h4>Done</h4><div class="task">Launch v2.4 🎉</div><div class="task">Fix payment webhook</div></div>
+    </div>
+  </div>
+</header>
+<section id="features">
+  <div class="sec-tag">Why Flowdeck</div>
+  <h2>Everything your team needs</h2>
+  <div class="features">
+    <div class="feat"><div class="ico">🗂️</div><h3>Visual boards</h3><p>Drag, drop, done. Kanban, timeline and calendar views of the same work, always in sync.</p></div>
+    <div class="feat"><div class="ico">⚡</div><h3>Automations</h3><p>Rules that move cards, assign owners and nudge deadlines while you sleep.</p></div>
+    <div class="feat"><div class="ico">🤖</div><h3>AI summaries</h3><p>One click turns a messy board into a crisp status update for stakeholders.</p></div>
+    <div class="feat"><div class="ico">🔒</div><h3>Private by default</h3><p>Your data is encrypted in transit and at rest. EU hosting available.</p></div>
+    <div class="feat"><div class="ico">🔗</div><h3>80+ integrations</h3><p>Slack, GitHub, Figma, Google Drive — Flowdeck meets your stack where it lives.</p></div>
+    <div class="feat"><div class="ico">📊</div><h3>Real-time insights</h3><p>Workload, velocity and bottlenecks at a glance, no spreadsheets required.</p></div>
+  </div>
+</section>
+<section id="pricing" style="max-width:none;">
+  <div class="pricing" style="max-width:1200px; margin:0 auto;">
+    <div class="sec-tag" style="color:var(--mint)">Pricing</div>
+    <h2>Simple, honest pricing</h2>
+    <div class="toggle">
+      <span>Monthly</span>
+      <div class="switch" id="bill-switch"></div>
+      <span>Yearly</span><span class="save">SAVE 20%</span>
+    </div>
+    <div class="plans">
+      <div class="plan"><h3>Starter</h3><div class="price">$0</div><div class="per">forever free</div>
+        <ul><li>3 boards</li><li>5 teammates</li><li>Basic automations</li></ul>
+        <a href="#cta" class="btn btn-dark">Choose Starter</a></div>
+      <div class="plan hot"><h3>Pro</h3><div class="price" data-m="9" data-y="7">$9</div><div class="per">per user / month</div>
+        <ul><li>Unlimited boards</li><li>AI summaries</li><li>Advanced automations</li><li>Priority support</li></ul>
+        <a href="#cta" class="btn btn-brand">Choose Pro</a></div>
+      <div class="plan"><h3>Enterprise</h3><div class="price">Custom</div><div class="per">annual agreement</div>
+        <ul><li>SSO &amp; SCIM</li><li>Audit logs</li><li>Dedicated manager</li></ul>
+        <a href="#cta" class="btn btn-dark">Talk to sales</a></div>
+    </div>
+  </div>
+</section>
+<section id="faq">
+  <div class="sec-tag">Questions</div>
+  <h2>Frequently asked</h2>
+  <div class="faq">
+    <details open><summary>Is the free plan really free?</summary><p>Yes. Three boards and five teammates, forever. Upgrade only when you need AI summaries or unlimited boards.</p></details>
+    <details><summary>Can I import from Trello or Asana?</summary><p>One-click importers bring your boards, members and attachments over in under two minutes.</p></details>
+    <details><summary>Do you offer discounts?</summary><p>Startups under two years old, nonprofits and classrooms get 50% off Pro. Just ask.</p></details>
+  </div>
+</section>
+<section id="cta" style="padding-top:0;">
+  <div class="cta">
+    <h2>Calm work starts today</h2>
+    <p>Join 40,000+ teams who plan, ship and breathe easier with Flowdeck.</p>
+    <a href="#" class="btn" style="background:#fff; color:var(--ink); font-weight:700;">Create your first board</a>
+  </div>
+</section>
+<footer>
+  <div>© 2026 Flowdeck Inc.</div>
+  <div>Made calmly, everywhere.</div>
+</footer>
+<script>
+  const sw = document.getElementById('bill-switch');
+  sw.addEventListener('click', ()=>{
+    sw.classList.toggle('yearly');
+    const yearly = sw.classList.contains('yearly');
+    document.querySelectorAll('.plan .price[data-m]').forEach(p=>{
+      p.textContent = '$' + (yearly ? p.dataset.y : p.dataset.m);
+    });
+  });
+</script>
+</body>
+</html>
